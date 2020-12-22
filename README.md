@@ -14,8 +14,10 @@
 
 #### 关键特性
 
-* 4组UART（可达3.125Mbps 带奇偶校验位）
-* SAR ADC：提供6通道（具有外部参考）、12位分辨率、可达1MSPS
+* CORDIC三角函数计算模块，可快速计算sin、cos等三角函数；
+* 16位高精度SIGMA-DELTA ADC，前置7级可编程增益，最大32倍；
+* CAN总线接口，支持DMA传输，最大速率1Mbit/s；
+* 4COM*32SEG SLCD模块，最大支持128段LCD显示屏。
 
 ### [资源收录](https://github.com/SoCXin)
 

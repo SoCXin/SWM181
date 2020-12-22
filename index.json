@@ -1,14 +1,45 @@
 {
     "type":"MCU",
     "name":"SWM181",
+    "series":["SWM181DB","SWM181CB","SWM181RC","SWM181KC"],
     "peripheral": ["ADC","LCDC","RTC","UART","I2C","SPI","PWM"],
-    "package":["LQFP64","SSOP16"],
-    "SRAM":1024,
-    "Flash":8000,
+    "package":["LQFP64","LQFP48","LQFP32","QFN40"],
     "Core": {
         "num": 1,
         "architecture":"Cortex M0",
-        "Freq":50
+        "Freq":48
+    },
+    "SWM181DB": {
+        "SRAM":16000,
+        "Flash":120000,
+        "package":"QFN40",
+        "peripheral": ["ADC","TIM","PWM"],
+        "GPIO":28,
+        "price":2.8
+    },
+    "SWM181CB": {
+        "SRAM":16000,
+        "Flash":120000,
+        "package":"LQFP48",
+        "peripheral": ["ADC","TIM","PWM"],
+        "GPIO":28,
+        "price":2.8
+    },
+    "SWM181RC": {
+        "SRAM":16000,
+        "Flash":248000,
+        "package":"LQFP64",
+        "peripheral": ["ADC","TIM","PWM"],
+        "GPIO":28,
+        "price":2.8
+    },
+    "SWM181KC": {
+        "SRAM":16000,
+        "Flash":248000,
+        "package":"LQFP32",
+        "peripheral": ["ADC","TIM","PWM"],
+        "GPIO":28,
+        "price":2.8
     },
     "UART": {
         "num": 1,
@@ -55,7 +86,7 @@
     },
     "manufacturer": {
         "vendor":"Synwit",
-        "homepage": "http://www.essemi.com/product/15.html"
+        "homepage": "http://www.synwit.cn/productList1/7.html"
     },
     "url":"http://www.SoC.xin/ESEM16",
     "repo":"https://github.com/SoCXin/ESEM16",
