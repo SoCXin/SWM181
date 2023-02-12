@@ -1,94 +1,36 @@
 {
     "type":"MCU",
     "name":"SWM181",
-    "series":["SWM181DB","SWM181CB","SWM181RC","SWM181KC"],
-    "peripheral": ["ADC","LCDC","RTC","UART","I2C","SPI","PWM"],
-    "package":["LQFP64","LQFP48","LQFP32","QFN40"],
+    "title": "Synwit SWM181 MCU",
+    "description":"Synwit Low Cost MCU",
     "Core": {
-        "num": 1,
-        "architecture":"Cortex M0",
-        "Freq":48
-    },
-    "SWM181DB": {
-        "SRAM":16000,
-        "Flash":120000,
-        "package":"QFN40",
-        "peripheral": ["ADC","TIM","PWM"],
-        "GPIO":28,
-        "price":2.8
-    },
-    "SWM181CB": {
-        "SRAM":16000,
-        "Flash":120000,
-        "package":"LQFP48",
-        "peripheral": ["ADC","TIM","PWM"],
-        "GPIO":28,
-        "price":2.8
-    },
-    "SWM181RC": {
-        "SRAM":16000,
-        "Flash":248000,
-        "package":"LQFP64",
-        "peripheral": ["ADC","TIM","PWM"],
-        "GPIO":28,
-        "price":2.8
-    },
-    "SWM181KC": {
-        "SRAM":16000,
-        "Flash":248000,
-        "package":"LQFP32",
-        "peripheral": ["ADC","TIM","PWM"],
-        "GPIO":28,
-        "price":2.8
-    },
-    "UART": {
-        "num": 1,
-        "ISO7816": 1,
-        "speed": 115200
-    },
-    "ADC": {
-        "num": 1,
-        "channel": 10,
-        "resolution": 12,
-        "rate": 1024
-    },
-    "TIM": {
-        "resolution":[16,16,32],
-        "rate": 1024
-    },
-    "RCC": {
-        "HSI": 16384,
-        "LSI": 32,
-        "HSE": [1024,20480],
-        "PLL": [32768,49152],
-        "accuracy": 0.02,
-        "rate": 1024
-    },
-    "RTC": {
-        "CLK": 32768,
-        "PPM": 1.5,
-        "Ivdd": 0.5
-    },
-    "PWR": {
-        "VDD": [2500,5500],
-        "IDD": [2.21,14.31],
-        "Imax": 120
-    },
-    "EMC": {
-        "EFT": 2000,
-        "ESD": 4000
-    },
-    "upload": {
-        "ISP": true,
-        "IAP": true,
-        "SWD": true,
-        "speed": 115200
+        "CoreNum": 1,
+        "Core":"Cortex-M0",
+        "Fmax":48,
+        "DMIPS": 45,
+        "CoreMark": 100
     },
     "manufacturer": {
         "vendor":"Synwit",
-        "homepage": "http://www.synwit.cn/productList1/7.html"
+        "homepage":"https://www.Synwit.com"
     },
-    "url":"http://www.SoC.xin/ESEM16",
-    "repo":"https://github.com/SoCXin/ESEM16",
-    "version":"1.0.0"
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SoCXin/SWM181.git"
+    },
+    "version":"1.0.0",
+    "series":["SWM181AW","SWM181AL"],
+    "package":["QFN40","LQFP48","LQFP64"],
+    "peripheral": ["ADC","CAN","USART","SPI","I2C"],
+    "temp": [-40,85],
+    "volt": [2.3,3.6],
+    "ESD": {
+        "HBM": 4000,
+        "CDM": 500
+    },
+    "keywords": [
+        "Cortex-M0",
+        "Synwit",
+        "ADC","CAN","I2C","SPI","USART"
+    ]
 }
