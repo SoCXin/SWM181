@@ -1016,7 +1016,13 @@
     <group>
         <name>APP</name>
         <file>
-            <name>$PROJ_DIR$\.\APP\main.c</name>
+            <name>$PROJ_DIR$\.\APP\main_Master.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\.\APP\main_Slave.c</name>
+            <excluded>
+                <configuration>SWM181</configuration>
+            </excluded>
         </file>
     </group>
     <group>

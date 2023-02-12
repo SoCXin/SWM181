@@ -3,7 +3,6 @@
 #include "cmsis_os.h"
 
 
-void SerialInit(void);
 void TaskADC(void const *arg);
 void TaskPWM(void const *arg);
 
@@ -13,16 +12,21 @@ osThreadDef(TaskADC, osPriorityLow,  1, 256);
 osThreadId  taskPWM;
 osThreadDef(TaskPWM, osPriorityHigh, 1, 256);
 
+
 osMessageQId  queueADC;
 osMessageQDef(queueADC, 16, uint32_t);
 
+
+void SerialInit(void);
 
 int main(void)
 {	
 	SystemInit();
 	
 	SerialInit();
-		
+	
+	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);					//调试指示信号
+	
 	osKernelInitialize();
 	
 	taskADC = osThreadCreate(osThread(TaskADC), NULL);
@@ -40,7 +44,6 @@ int main(void)
 	}
 }
 
-
 /****************************************************************************************************************************************** 
 * 函数名称:	TaskADC()
 * 功能说明: 启动ADC采集任务
@@ -50,54 +53,54 @@ int main(void)
 ******************************************************************************************************************************************/
 void TaskADC(void const *arg)
 {
-	ADC_InitStructure ADC_initStruct;
+	SDADC_InitStructure SDADC_initStruct;
 	
-	PORT_Init(PORTE, PIN4,  PORTE_PIN4_ADC_CH0, 0);	//PE.4  => ADC.CH0
-	PORT_Init(PORTA, PIN15, PORTA_PIN15_ADC_CH1, 0);//PA.15 => ADC.CH1
-	PORT_Init(PORTA, PIN14, PORTA_PIN14_ADC_CH2, 0);//PA.14 => ADC.CH2
-	PORT_Init(PORTA, PIN13, PORTA_PIN13_ADC_CH3, 0);//PA.13 => ADC.CH3
-	PORT_Init(PORTA, PIN12, PORTA_PIN12_ADC_CH4, 0);//PA.12 => ADC.CH4
-	PORT_Init(PORTC, PIN7,  PORTC_PIN7_ADC_CH5, 0);	//PC.7  => ADC.CH5
-	PORT_Init(PORTC, PIN6,  PORTC_PIN6_ADC_CH6, 0);	//PC.6  => ADC.CH6
-													//ADC_CH7 => ADC.CH7
+	PORT_Init(PORTC, PIN2, PORTC_PIN2_SDADC_CH3P, 0);	//PC.2 => SDADC.CH3P
 	
-	ADC_initStruct.clk_src = ADC_CLKSRC_HRC_DIV4;
-	ADC_initStruct.channels = ADC_CH6;
-	ADC_initStruct.samplAvg = ADC_AVG_SAMPLE1;
-	ADC_initStruct.trig_src = ADC_TRIGSRC_SW;
-	ADC_initStruct.Continue = 0;					//非连续模式，即单次模式
-	ADC_initStruct.EOC_IEn = ADC_CH6;	
-	ADC_initStruct.OVF_IEn = 0;
-	ADC_Init(ADC, &ADC_initStruct);					//配置ADC
+	SDADC_initStruct.clk_src = SDADC_CLKSRC_HRC_DIV8;
+	SDADC_initStruct.channels = SDADC_CH3;
+	SDADC_initStruct.out_cali = SDADC_OUT_CALIED;
+	SDADC_initStruct.refp_sel = SDADC_REFP_AVDD;
+	SDADC_initStruct.trig_src = SDADC_TRIGSRC_TIMR3;
+	SDADC_initStruct.Continue = 0;						//非连续模式，即单次模式
+	SDADC_initStruct.EOC_IEn = 1;	
+	SDADC_initStruct.OVF_IEn = 0;
+	SDADC_initStruct.HFULL_IEn = 0;
+	SDADC_initStruct.FULL_IEn = 0;
+	SDADC_Init(SDADC, &SDADC_initStruct);				//配置SDADC
 	
-	IRQ_Connect(IRQ0_15_ADC, IRQ5_IRQ, 1);
-	NVIC_SetPriority(IRQ5_IRQ, 2);
+	SDADC_Config_Set(SDADC, SDADC_CFG_A, SDADC_CFG_GAIN_1, 1, 1);
+	SDADC_Config_Cali(SDADC, SDADC_CFG_A, SDADC_CALI_COM_GND, 0);
+	SDADC_Config_Sel(SDADC, SDADC_CFG_A, SDADC_CH3);
 	
-	ADC_Open(ADC);									//使能ADC
+	SDADC_Open(SDADC);									//使能SDADC
 	
-	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);				//调试指示信号
+	IRQ_Connect(IRQ0_15_SDADC, IRQ5_IRQ, 1);
+	
+	TIMR_Init(TIMR3, TIMR_MODE_TIMER, SystemCoreClock/10, 0);	//每秒钟采样10次
+	TIMR_Start(TIMR3);
 	
 	while(1)
 	{
-		ADC_Start(ADC);
+		// do nothing
 		
-		osDelay(200);
+		osDelay(500);
 	}
 }
 
 void IRQ5_Handler(void)
 {
-	uint16_t val;
+	int16_t res;
+	uint32_t chn;
 	
-	ADC_IntEOCClr(ADC, ADC_CH6);	//清除中断标志
+	SDADC_IntEOCClr(SDADC);			//清除中断标志
 	
-	val = ADC_Read(ADC, ADC_CH6);
+	res = SDADC_Read(SDADC, &chn);
 	
-	osMessagePut(queueADC, val, 0);
+	osMessagePut(queueADC, res + 32768, 0);
 	
 	GPIO_InvBit(GPIOA, PIN5);
 }
-
 
 /****************************************************************************************************************************************** 
 * 函数名称:	TaskPWM()
@@ -108,9 +111,10 @@ void IRQ5_Handler(void)
 ******************************************************************************************************************************************/
 void TaskPWM(void const *arg)
 {
-	PWM_InitStructure PWM_initStruct;
+	PWM_InitStructure  PWM_initStruct;
 	
 	PWM_initStruct.clk_div = PWM_CLKDIV_4;		//F_PWM = 24M/4 = 6M
+	
 	PWM_initStruct.mode = PWM_MODE_INDEP;		//A路和B路独立输出					
 	PWM_initStruct.cycleA = 10000;				//6M/10000 = 600Hz			
 	PWM_initStruct.hdutyA =  2500;				//2500/10000 = 25%
@@ -125,8 +129,7 @@ void TaskPWM(void const *arg)
 	
 	PWM_Init(PWM1, &PWM_initStruct);
 	
-	PORT_Init(PORTA, PIN6, FUNMUX_PWM1A_OUT, 0);
-	PORT_Init(PORTA, PIN7, FUNMUX_PWM1B_OUT, 0);
+	PORT_Init(PORTB, PIN9, FUNMUX_PWM1B_OUT, 0);
 	
 	PWM_Start(PWM1, 1, 1);
 	
@@ -135,12 +138,11 @@ void TaskPWM(void const *arg)
 		osEvent evt = osMessageGet(queueADC, 1);
 		if(evt.status == osEventMessage)
 		{
-			uint16_t duty = evt.value.v;
-			printf("%d,", duty);
-			if(duty <  100) duty =  100;
-			if(duty > 4000) duty = 4000;
+			uint32_t duty = evt.value.v;
+			if(duty < 100)   duty = 100;
+			if(duty > 64000) duty = 64000;
 			
-			PWM_SetHDuty(PWM1, PWM_CH_A, 10000 * duty / 4095);
+			PWM_SetHDuty(PWM1, PWM_CH_A, 10000 * duty / 65536);
 			PWM_SetHDuty(PWM1, PWM_CH_B, 10000 - PWM_GetHDuty(PWM1, PWM_CH_A));
 		}
 	}

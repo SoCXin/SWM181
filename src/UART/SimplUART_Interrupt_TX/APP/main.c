@@ -1,30 +1,28 @@
-#include <string.h>
 #include "SWM181.h"
+
+#include <string.h>
 
 
 void SerialInit(void);
+
 void UART_SendChars(char data[], uint32_t len);
 
 int main(void)
 {
-	int i;
-	char str_Hi[] = "Hello from Synwit UART!\r\n";
+	uint32_t i;
+	char str_Hi[] = "Hi from Synwit\r\n";
 	
 	SystemInit();
 	
 	SerialInit();
-	
-	GPIO_Init(GPIOA, PIN4, 1, 0, 0, 0);
-	GPIO_Init(GPIOA, PIN5, 1, 0, 0, 0);
    	
 	while(1==1)
 	{
 		UART_SendChars(str_Hi, strlen(str_Hi));
 		
-		for(i = 0; i < SystemCoreClock/4; i++) __NOP();
+		for(i = 0; i < 10000000; i++);
 	}
 }
-
 
 char * UART_TXBuffer = 0;
 uint32_t UART_TXCount = 0,
@@ -36,38 +34,30 @@ void UART_SendChars(char data[], uint32_t len)
 	UART_TXCount = len;
 	UART_TXIndex = 0;
 	
-	UART_INTEn(UART0, UART_IT_TX_THR | UART_IT_TX_DONE);
+	UART_INTTXThresholdEn(UART0);
 }
-
 
 void IRQ0_Handler(void)
 {
-	if(UART_INTStat(UART0, UART_IT_TX_THR))
+	if(UART_INTTXThresholdStat(UART0))
 	{
 		while(UART_IsTXFIFOFull(UART0) == 0)
 		{
 			if(UART_TXIndex < UART_TXCount)
 			{
-				UART_WriteByte(UART0, UART_TXBuffer[UART_TXIndex++]);
+				UART_WriteByte(UART0, UART_TXBuffer[UART_TXIndex]);
+				
+				UART_TXIndex++;
 			}
 			else
 			{
-				UART_INTDis(UART0, UART_IT_TX_THR);
+				UART_INTTXThresholdDis(UART0);
 				
 				break;
 			}
 		}
-		
-		GPIO_InvBit(GPIOA, PIN4);
-	}
-	else if(UART_INTStat(UART0, UART_IT_TX_DONE))
-	{
-		GPIO_InvBit(GPIOA, PIN5);
-		
-		UART_INTDis(UART0, UART_IT_TX_DONE);
 	}
 }
-
 
 void SerialInit(void)
 {

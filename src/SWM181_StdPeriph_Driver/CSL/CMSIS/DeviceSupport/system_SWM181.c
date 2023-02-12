@@ -94,7 +94,12 @@ void SystemCoreClockUpdate(void)
 	CyclesPerUs = SystemCoreClock / 1000000;
 }
 
-
+static void switchToRC24MHz(void);
+static void switchToRC6MHz(void);
+static void switchToRC48MHz(void);
+static void switchToRC12MHz(void);
+static void switchToRC32KHz(void);
+static void switchToXTAL(void);
 /****************************************************************************************************************************************** 
 * 函数名称: 
 * 功能说明: The necessary initializaiton of systerm
@@ -164,7 +169,7 @@ void SystemInit(void)
 	SystemCoreClockUpdate();
 }
 
-void switchToRC24MHz(void)
+static void switchToRC24MHz(void)
 {
 	SYS->HRCCR = (1 << SYS_HRCCR_EN_Pos) |
 				 (0 << SYS_HRCCR_DBL_Pos);		//HRC = 24MHz
@@ -173,7 +178,7 @@ void switchToRC24MHz(void)
 	SYS->CLKSEL |= (1 << SYS_CLKSEL_SYS_Pos);	//SYS_CLK  <= HFCK
 }
 
-void switchToRC6MHz(void)
+static void switchToRC6MHz(void)
 {
 	SYS->HRCCR = (1 << SYS_HRCCR_EN_Pos) |
 				 (0 << SYS_HRCCR_DBL_Pos);		//HRC = 24MHz
@@ -182,7 +187,7 @@ void switchToRC6MHz(void)
 	SYS->CLKSEL |= (1 << SYS_CLKSEL_SYS_Pos);	//SYS_CLK  <= HFCK
 }
 
-void switchToRC48MHz(void)
+static void switchToRC48MHz(void)
 {
 	SYS->HRCCR = (1 << SYS_HRCCR_EN_Pos) |
 				 (1 << SYS_HRCCR_DBL_Pos);		//HRC = 48MHz		
@@ -191,7 +196,7 @@ void switchToRC48MHz(void)
 	SYS->CLKSEL |= (1 << SYS_CLKSEL_SYS_Pos);	//SYS_CLK  <= HFCK
 }
 
-void switchToRC12MHz(void)
+static void switchToRC12MHz(void)
 {
 	SYS->HRCCR = (1 << SYS_HRCCR_EN_Pos) |
 				 (1 << SYS_HRCCR_DBL_Pos);		//HRC = 48MHz
@@ -200,7 +205,7 @@ void switchToRC12MHz(void)
 	SYS->CLKSEL |= (1 << SYS_CLKSEL_SYS_Pos);	//SYS_CLK  <= HFCK
 }
 
-void switchToRC32KHz(void)
+static void switchToRC32KHz(void)
 {
 	SYS->LRCCR = (1 << SYS_LRCCR_EN_Pos);
 	
@@ -208,7 +213,7 @@ void switchToRC32KHz(void)
 	SYS->CLKSEL &= ~(1 << SYS_CLKSEL_SYS_Pos);	//SYS_CLK  <= LFCK
 }
 
-void switchToXTAL(void)
+static void switchToXTAL(void)
 {
 	uint32_t i;
 	

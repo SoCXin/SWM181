@@ -1489,11 +1489,11 @@ typedef struct {
 #define SPI_IF_RFOVF_Msk			(0x01 << SPI_IF_RFOVF_Pos)
 #define SPI_IF_RFF_Pos				1
 #define SPI_IF_RFF_Msk				(0x01 << SPI_IF_RFF_Pos)
-#define SPI_IF_RFHF_Pos				2		//rxfifo_full | rxfifo_level[2]
+#define SPI_IF_RFHF_Pos				2
 #define SPI_IF_RFHF_Msk				(0x01 << SPI_IF_RFHF_Pos)
 #define SPI_IF_TFE_Pos				3
 #define SPI_IF_TFE_Msk				(0x01 << SPI_IF_TFE_Pos)
-#define SPI_IF_TFHF_Pos				4		//txfifo_full | txfifo_level[2]
+#define SPI_IF_TFHF_Pos				4
 #define SPI_IF_TFHF_Msk				(0x01 << SPI_IF_TFHF_Pos)
 #define SPI_IF_WTC_Pos				8		//Word Transmit Complete，每传输完成一个数据字由硬件置1
 #define SPI_IF_WTC_Msk				(0x01 << SPI_IF_WTC_Pos)

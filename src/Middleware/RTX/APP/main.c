@@ -55,7 +55,6 @@ __task void TaskADC(void)
 	
 	ADC_initStruct.clk_src = ADC_CLKSRC_HRC_DIV4;
 	ADC_initStruct.channels = ADC_CH6;
-	ADC_initStruct.samplAvg = ADC_AVG_SAMPLE1;
 	ADC_initStruct.trig_src = ADC_TRIGSRC_TIMR3;
 	ADC_initStruct.Continue = 0;					//非连续模式，即单次模式
 	ADC_initStruct.EOC_IEn = ADC_CH6;	

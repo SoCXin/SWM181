@@ -1,42 +1,72 @@
 #include "SWM181.h"
-#include "CircleBuffer.h"
 
-CircleBuffer_t CirBuf;
+#include <string.h>
 
 
 void SerialInit(void);
 
+#define UART_RX_LEN	 128
+
+uint32_t UART_GetChars(char *data);
+
 int main(void)
 {
+	uint32_t len, i;
+	char buffer[UART_RX_LEN] = {0};
+	
 	SystemInit();
 	
 	SerialInit();
    	
 	while(1==1)
 	{
-		uint8_t chr;
-		if(CirBuf_Read(&CirBuf, &chr, 1))
-			printf("%c", chr);
+		if((len = UART_GetChars(buffer)) != 0)
+		{
+			for(i = 0; i < len; i++)
+				printf("%c", buffer[i]);
+		}
 	}
 }
 
+char UART_RXBuffer[UART_RX_LEN] = {0};
+uint32_t UART_RXIndex = 0;
+
+uint32_t UART_GetChars(char *data)
+{
+	uint32_t len = 0;
+	
+	if(UART_RXIndex != 0)
+	{
+		NVIC_DisableIRQ(IRQ0_IRQ);		//从UART_RXBuffer读取数据过程中要关闭中断，防止读写混乱
+		memcpy(data, UART_RXBuffer, UART_RX_LEN);
+		len = UART_RXIndex;
+		UART_RXIndex = 0;
+		NVIC_EnableIRQ(IRQ0_IRQ);
+	}
+	
+	return len;
+}
 
 void IRQ0_Handler(void)
 {
 	uint32_t chr;
 	
-	if(UART_INTStat(UART0, UART_IT_RX_THR | UART_IT_RX_TOUT))
+	if(UART_INTRXThresholdStat(UART0) || UART_INTTimeoutStat(UART0))
 	{
 		while(UART_IsRXFIFOEmpty(UART0) == 0)
 		{
 			if(UART_ReadByte(UART0, &chr) == 0)
 			{
-				CirBuf_Write(&CirBuf, (uint8_t *)&chr, 1);
+				if(UART_RXIndex < UART_RX_LEN)
+				{
+					UART_RXBuffer[UART_RXIndex] = chr;
+					
+					UART_RXIndex++;
+				}
 			}
 		}
 	}
 }
-
 
 void SerialInit(void)
 {

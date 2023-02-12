@@ -1,7 +1,7 @@
 #include "SWM181.h"
-#include "CircleBuffer.h"
 
-CircleBuffer_t CirBuf;
+#include <string.h>
+
 
 /* 说明：只有当接收 FIFO 中有数据，且在指定时间内未接收到新的数据时，才会触发超时中断。
  * 若应用中希望通过数据间时间间隔作为帧间隔依据，即不管对方发送过来多少个数据，
@@ -11,8 +11,15 @@ CircleBuffer_t CirBuf;
 
 void SerialInit(void);
 
+#define UART_RX_LEN	 128
+
+uint32_t UART_GetChars(char *data);
+
 int main(void)
 {
+	uint32_t len, i;
+	char buffer[UART_RX_LEN] = {0};
+	
 	SystemInit();
 	
 	SerialInit();
@@ -21,41 +28,70 @@ int main(void)
    	
 	while(1==1)
 	{
-		uint8_t chr;
-		if(CirBuf_Read(&CirBuf, &chr, 1))
-			printf("%c", chr);
+		if((len = UART_GetChars(buffer)) != 0)
+		{
+			for(i = 0; i < len; i++)
+				printf("%c", buffer[i]);
+		}
 	}
 }
 
+char UART_RXBuffer[UART_RX_LEN] = {0};
+uint32_t UART_RXIndex = 0;
+
+uint32_t UART_GetChars(char *data)
+{
+	uint32_t len = 0;
+	
+	if(UART_RXIndex != 0)
+	{
+		NVIC_DisableIRQ(IRQ0_IRQ);		//从UART_RXBuffer读取数据过程中要关闭中断，防止读写混乱
+		memcpy(data, UART_RXBuffer, UART_RX_LEN);
+		len = UART_RXIndex;
+		UART_RXIndex = 0;
+		NVIC_EnableIRQ(IRQ0_IRQ);
+	}
+	
+	return len;
+}
 
 void IRQ0_Handler(void)
 {
 	uint32_t chr;
 	
-	if(UART_INTStat(UART0, UART_IT_RX_THR))
+	if(UART_INTRXThresholdStat(UART0))
 	{
 		while((UART0->FIFO & UART_FIFO_RXLVL_Msk) > 1)
 		{
 			if(UART_ReadByte(UART0, &chr) == 0)
 			{
-				CirBuf_Write(&CirBuf, (uint8_t *)&chr, 1);
+				if(UART_RXIndex < UART_RX_LEN)
+				{
+					UART_RXBuffer[UART_RXIndex] = chr;
+					
+					UART_RXIndex++;
+				}
 			}
 		}
 	}
-	else if(UART_INTStat(UART0, UART_IT_RX_TOUT))
+	else if(UART_INTTimeoutStat(UART0))
 	{
 		while(UART_IsRXFIFOEmpty(UART0) == 0)
 		{
 			if(UART_ReadByte(UART0, &chr) == 0)
 			{
-				CirBuf_Write(&CirBuf, (uint8_t *)&chr, 1);
+				if(UART_RXIndex < UART_RX_LEN)
+				{
+					UART_RXBuffer[UART_RXIndex] = chr;
+					
+					UART_RXIndex++;
+				}
 			}
 		}
 		
 		GPIO_InvBit(GPIOA, PIN5);
 	}
 }
-
 
 void SerialInit(void)
 {

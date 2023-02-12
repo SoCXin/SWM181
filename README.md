@@ -33,7 +33,7 @@
 
 ## [选型建议](https://github.com/SoCXin/SWM181)
 
-[SWM181](https://item.szlcsc.com/257391.html)
+[SWM181](https://item.szlcsc.com/257391.html) 也是[LuatOS](https://wiki.luatos.com/chips/swm181/index.html)支持的平台。
 
 
 ## [www.SoC.xin](http://www.SoC.Xin)

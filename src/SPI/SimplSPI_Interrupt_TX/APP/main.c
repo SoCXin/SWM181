@@ -67,12 +67,13 @@ void SPIMstSend(uint16_t buff[], uint32_t cnt)
 	
 	SPI_CS_Low();
 	
-	SPI_INTEn(SPI0, SPI_IT_TX_EMPTY | SPI_IT_TX_DONE);
+	SPI_INTTXEmptyEn(SPI0);
+	SPI_INTTXCompleteEn(SPI0);
 }
 
 void IRQ8_Handler(void)
 {
-	if(SPI_INTStat(SPI0, SPI_IT_TX_EMPTY))
+	if(SPI_INTTXEmptyStat(SPI0))
 	{
 		while((SPI_IsTXFull(SPI0) == 0) && (SPITXIndex < SPITXCount))
 		{
@@ -81,20 +82,20 @@ void IRQ8_Handler(void)
 		
 		if(SPITXIndex == SPITXCount)
 		{
-			SPI_INTDis(SPI0, SPI_IT_TX_EMPTY);
+			SPI_INTTXEmptyDis(SPI0);
 		}
 		
-		SPI_INTClr(SPI0, SPI_IT_TX_EMPTY);	//清除中断标志，必须在填充TX FIFO后清中断标志
+		SPI_INTTXEmptyClr(SPI0);	//清除中断标志，必须在填充TX FIFO后清中断标志
 	}
 	
-	if(SPI_INTStat(SPI0, SPI_IT_TX_DONE))
+	if(SPI_INTTXCompleteStat(SPI0))
 	{
-		SPI_INTClr(SPI0, SPI_IT_TX_DONE);
+		SPI_INTTXCompleteClr(SPI0);
 		
 		if(SPITXIndex == SPITXCount)	// 要发送的数据已全部填入SPI TX FIFO
 		{
 			SPI_CS_High();
-			SPI_INTDis(SPI0, SPI_IT_TX_DONE);
+			SPI_INTTXCompleteDis(SPI0);
 		}
 	}
 	

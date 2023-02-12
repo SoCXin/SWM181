@@ -73,7 +73,7 @@ void SPIUART_Init(uint16_t baudrate)
 	SPI_initStruct.WordSize = 11;
 	SPI_initStruct.Master = 0;
 	SPI_initStruct.RXHFullIEn = 0;
-	SPI_initStruct.TXEmptyIEn = 0;
+	SPI_initStruct.TXHFullIEn = 0;
 	SPI_Init(SPI0, &SPI_initStruct);
 	
 	IRQ_Connect(IRQ0_15_SPI0, IRQ8_IRQ, 1);
@@ -137,7 +137,7 @@ static void _SPIUART_Send(uint16_t cnt)
 	
 	SPI_MASTER_CLK_GEN();
 	
-	SPI_INTEn(SPI0, SPI_IT_TX_EMPTY);
+	SPI_INTTXEmptyEn(SPI0);
 }
 
 /****************************************************************************************************************************************** 
@@ -154,10 +154,10 @@ uint16_t SPIUART_Recv(uint16_t buff[], uint16_t min)
 	
 	if(SPI_RX_Index < min) return 0;
 	
-	SPI_INTDis(SPI0, SPI_IT_TX_EMPTY);
+	SPI_INTTXEmptyDis(SPI0);
 	memcpy(buff, SPI_RX_Buff, (len = SPI_RX_Index) * 2);
 	SPI_RX_Index = 0;
-	SPI_INTEn(SPI0, SPI_IT_TX_EMPTY);
+	SPI_INTTXEmptyEn(SPI0);
 	
 	SPI2UART_decode(buff, len);
 	
@@ -191,7 +191,7 @@ void IRQ8_Handler(void)
 		
 		SPIUART_SendComplete = 1;
 		
-		SPI_INTDis(SPI0, SPI_IT_TX_EMPTY);
+		SPI_INTTXEmptyDis(SPI0);
 	}
 	else if(SPI_TX_Index == SPI_TX_Count)
 	{
