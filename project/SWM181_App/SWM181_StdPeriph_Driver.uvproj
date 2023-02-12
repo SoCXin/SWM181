@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_projx.xsd">
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_proj.xsd">
 
-  <SchemaVersion>2.1</SchemaVersion>
+  <SchemaVersion>1.1</SchemaVersion>
 
   <Header>### uVision Project, (C) Keil Software</Header>
 
@@ -10,14 +10,10 @@
       <TargetName>SWM181</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC</pCCUsed>
-      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>SWM181xB</Device>
-          <Vendor>Synwit</Vendor>
-          <PackID>Synwit.SWM32_DFP.1.20.4</PackID>
-          <PackURL>http://www.synwit.com/pack</PackURL>
+          <Device>Cortex-M0</Device>
+          <Vendor>ARM</Vendor>
           <Cpu>CLOCK(12000000) CPUTYPE("Cortex-M0") ESEL ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -34,7 +30,6 @@
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
           <SFDFile>C:\Keil\ARM\SFD\SWM181.SFR</SFDFile>
-          <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
@@ -49,10 +44,10 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\out\</OutputDirectory>
-          <OutputName>SimplADC</OutputName>
+          <OutputName>SWM181_stdperiph_lib</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>0</CreateHexFile>
+          <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\out\</ListingPath>
@@ -76,8 +71,6 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
-            <nStopB1X>0</nStopB1X>
-            <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
@@ -86,8 +79,6 @@
             <UserProg2Name>fromelf --text -a -c -o "$L@L.asm" "#L"</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
-            <nStopA1X>0</nStopA1X>
-            <nStopA2X>0</nStopA2X>
           </AfterMake>
           <SelectedForBatchBuild>0</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
@@ -106,7 +97,6 @@
           <StopOnExitCode>3</StopOnExitCode>
           <CustomArgument></CustomArgument>
           <IncludeLibraryModules></IncludeLibraryModules>
-          <ComprImg>1</ComprImg>
         </CommonProperty>
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
@@ -126,24 +116,58 @@
             <HexOffset>0</HexOffset>
             <Oh166RecLen>16</Oh166RecLen>
           </OPTHX>
+          <Simulator>
+            <UseSimulator>0</UseSimulator>
+            <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
+            <RunToMain>1</RunToMain>
+            <RestoreBreakpoints>1</RestoreBreakpoints>
+            <RestoreWatchpoints>1</RestoreWatchpoints>
+            <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
+            <RestoreFunctions>1</RestoreFunctions>
+            <RestoreToolbox>1</RestoreToolbox>
+            <LimitSpeedToRealTime>0</LimitSpeedToRealTime>
+          </Simulator>
+          <Target>
+            <UseTarget>1</UseTarget>
+            <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
+            <RunToMain>1</RunToMain>
+            <RestoreBreakpoints>1</RestoreBreakpoints>
+            <RestoreWatchpoints>1</RestoreWatchpoints>
+            <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
+            <RestoreFunctions>0</RestoreFunctions>
+            <RestoreToolbox>1</RestoreToolbox>
+            <RestoreTracepoints>0</RestoreTracepoints>
+          </Target>
+          <RunDebugAfterBuild>0</RunDebugAfterBuild>
+          <TargetSelection>7</TargetSelection>
+          <SimDlls>
+            <CpuDll></CpuDll>
+            <CpuDllArguments></CpuDllArguments>
+            <PeripheralDll></PeripheralDll>
+            <PeripheralDllArguments></PeripheralDllArguments>
+            <InitializationFile></InitializationFile>
+          </SimDlls>
+          <TargetDlls>
+            <CpuDll></CpuDll>
+            <CpuDllArguments></CpuDllArguments>
+            <PeripheralDll></PeripheralDll>
+            <PeripheralDllArguments></PeripheralDllArguments>
+            <InitializationFile></InitializationFile>
+            <Driver>Segger\JL2CM3.dll</Driver>
+          </TargetDlls>
         </DebugOption>
         <Utilities>
           <Flash1>
             <UseTargetDll>1</UseTargetDll>
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
-            <UpdateFlashBeforeDebugging>0</UpdateFlashBeforeDebugging>
+            <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
             <DriverSelection>4099</DriverSelection>
           </Flash1>
-          <bUseTDR>0</bUseTDR>
           <Flash2>Segger\JL2CM3.dll</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
-          <pFcarmOut></pFcarmOut>
-          <pFcarmGrp></pFcarmGrp>
-          <pFcArmRoot></pFcArmRoot>
-          <FcArmLst>0</FcArmLst>
         </Utilities>
         <TargetArmAds>
           <ArmAdsMisc>
@@ -184,15 +208,12 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>0</RvdsVP>
-            <RvdsMve>0</RvdsMve>
-            <RvdsCdeCp>0</RvdsCdeCp>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
             <useUlib>1</useUlib>
             <EndSel>1</EndSel>
             <uLtcg>0</uLtcg>
-            <nSecure>0</nSecure>
             <RoSelD>3</RoSelD>
             <RwSelD>5</RwSelD>
             <CodeSel>0</CodeSel>
@@ -276,7 +297,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x10000</Size>
+                <Size>0x18000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -325,21 +346,11 @@
             <wLevel>0</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
-            <uGnu>0</uGnu>
-            <useXO>0</useXO>
-            <v6Lang>1</v6Lang>
-            <v6LangP>1</v6LangP>
-            <vShortEn>1</vShortEn>
-            <vShortWch>1</vShortWch>
-            <v6Lto>0</v6Lto>
-            <v6WtE>0</v6WtE>
-            <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\SWM181_StdPeriph_Driver\CSL\CMSIS\CoreSupport;..\..\SWM181_StdPeriph_Driver\CSL\CMSIS\DeviceSupport;..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver</IncludePath>
+              <IncludePath>.\CSL\CMSIS\CoreSupport;.\CSL\CMSIS\DeviceSupport;.\CSL\SWM181_StdPeriph_Driver</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -351,8 +362,6 @@
             <SwStkChk>0</SwStkChk>
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
-            <useXO>0</useXO>
-            <ClangAsOpt>1</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -369,7 +378,6 @@
             <useFile>0</useFile>
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0x00000000</DataAddressRange>
-            <pXoBase></pXoBase>
             <ScatterFile></ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
@@ -396,102 +404,107 @@
             <File>
               <FileName>SWM181_adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_adc.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_adc.c</FilePath>
             </File>
             <File>
               <FileName>SWM181_cmp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_cmp.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_cmp.c</FilePath>
             </File>
             <File>
               <FileName>SWM181_exti.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_exti.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_exti.c</FilePath>
             </File>
             <File>
               <FileName>SWM181_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_gpio.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_gpio.c</FilePath>
             </File>
             <File>
               <FileName>SWM181_i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_i2c.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_i2c.c</FilePath>
             </File>
             <File>
               <FileName>SWM181_pwm.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_pwm.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_pwm.c</FilePath>
             </File>
             <File>
               <FileName>SWM181_timr.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_timr.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_timr.c</FilePath>
             </File>
             <File>
               <FileName>SWM181_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_uart.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_uart.c</FilePath>
             </File>
             <File>
               <FileName>SWM181_wdt.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_wdt.c</FilePath>
-            </File>
-            <File>
-              <FileName>SWM181_can.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_can.c</FilePath>
-            </File>
-            <File>
-              <FileName>SWM181_cordic.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_cordic.c</FilePath>
-            </File>
-            <File>
-              <FileName>SWM181_div.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_div.c</FilePath>
-            </File>
-            <File>
-              <FileName>SWM181_dma.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_dma.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_wdt.c</FilePath>
             </File>
             <File>
               <FileName>SWM181_flash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_flash.c</FilePath>
-            </File>
-            <File>
-              <FileName>SWM181_irqmux.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_irqmux.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_flash.c</FilePath>
             </File>
             <File>
               <FileName>SWM181_port.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_port.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_port.c</FilePath>
             </File>
             <File>
-              <FileName>SWM181_sdadc.c</FileName>
+              <FileName>SWM181_irqmux.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_sdadc.c</FilePath>
-            </File>
-            <File>
-              <FileName>SWM181_slcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_slcd.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_irqmux.c</FilePath>
             </File>
             <File>
               <FileName>SWM181_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_spi.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWM181_sdadc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_sdadc.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWM181_slcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_slcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWM181_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWM181_can.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_can.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWM181_div.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_div.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWM181_cordic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_cordic.c</FilePath>
             </File>
             <File>
               <FileName>SWM181_cache.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\SWM181_StdPeriph_Driver\SWM181_cache.c</FilePath>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_cache.c</FilePath>
+            </File>
+            <File>
+              <FileName>SWM181_sleep.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\CSL\SWM181_StdPeriph_Driver\SWM181_sleep.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -501,23 +514,17 @@
             <File>
               <FileName>system_SWM181.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\CMSIS\DeviceSupport\system_SWM181.c</FilePath>
+              <FilePath>.\CSL\CMSIS\DeviceSupport\system_SWM181.c</FilePath>
             </File>
             <File>
               <FileName>startup_SWM181.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\..\SWM181_StdPeriph_Driver\CSL\CMSIS\DeviceSupport\startup\arm\startup_SWM181.s</FilePath>
+              <FilePath>.\CSL\CMSIS\DeviceSupport\startup\arm\startup_SWM181.s</FilePath>
             </File>
           </Files>
         </Group>
       </Groups>
     </Target>
   </Targets>
-
-  <RTE>
-    <apis/>
-    <components/>
-    <files/>
-  </RTE>
 
 </Project>

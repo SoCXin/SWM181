@@ -33,7 +33,8 @@
 
 ## [选型建议](https://github.com/SoCXin/SWM181)
 
-[SWM181](https://item.szlcsc.com/257391.html) 也是[LuatOS](https://wiki.luatos.com/chips/swm181/index.html)支持的平台。
+[SWM181](https://item.szlcsc.com/257391.html)主要特点在于支持16-bit SIGMA-DELTA ADC，支持编程增益放大，也是[LuatOS](https://wiki.luatos.com/chips/swm181/index.html)支持的MCU平台。
 
+[Synwit](http://www.synwit.cn)其他的芯片系列包括用于电机控制的[SWM320](https://github.com/SoCXin/SWM320)和屏幕驱动的[SWM34S](https://github.com/SoCXin/SWM34S)
 
 ## [www.SoC.xin](http://www.SoC.Xin)

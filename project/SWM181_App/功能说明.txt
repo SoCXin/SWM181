@@ -1,0 +1,1 @@
+功能说明：连接在PA5上的LED慢速闪烁，串口通过PA1打印“Running in APP”

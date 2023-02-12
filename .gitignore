@@ -12,6 +12,7 @@ Debug
 ~*
 .settings
 output
+out/
 # .mxproject
 # Change*
 # CHANGE*
