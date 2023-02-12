@@ -2,7 +2,7 @@
     "type":"MCU",
     "name":"SWM181",
     "title": "Synwit SWM181 MCU",
-    "description":"Synwit Low Cost MCU",
+    "description":"Synwit SD-ADC MCU",
     "Core": {
         "CoreNum": 1,
         "Core":"Cortex-M0",
@@ -12,16 +12,16 @@
     },
     "manufacturer": {
         "vendor":"Synwit",
-        "homepage":"https://www.Synwit.com"
+        "homepage":"http://www.synwit.cn"
     },
     "repository": {
         "type": "git",
         "url": "https://github.com/SoCXin/SWM181.git"
     },
     "version":"1.0.0",
-    "series":["SWM181AW","SWM181AL"],
+    "series":["SWM181"],
     "package":["QFN40","LQFP48","LQFP64"],
-    "peripheral": ["ADC","CAN","USART","SPI","I2C"],
+    "peripheral": ["ADC","SD-ADC","CAN","USART","SPI","I2C"],
     "temp": [-40,85],
     "volt": [2.3,3.6],
     "ESD": {
@@ -31,6 +31,7 @@
     "keywords": [
         "Cortex-M0",
         "Synwit",
-        "ADC","CAN","I2C","SPI","USART"
+        "ADC","SD-ADC","CAN","I2C","SPI","USART"
     ]
 }
+
